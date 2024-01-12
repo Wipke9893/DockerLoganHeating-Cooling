@@ -1,0 +1,13 @@
+#!/bin/bash
+set -e
+
+export PGPASSWORD='logan_app_user'
+export PGCLIENTENCODING='UTF8'
+BASEDIR=$(dirname $0)
+DATABASE=logan_heating
+
+psql -U postgres -f "$BASEDIR/dropdb.sql" &&
+createdb -U postgres $DATABASE &&
+psql -U postgres -d $DATABASE -f "$BASEDIR/schema.sql" &&
+psql -U postgres -d $DATABASE -f "$BASEDIR/data.sql" &&
+psql -U postgres -d $DATABASE -f "$BASEDIR/user.sql"
